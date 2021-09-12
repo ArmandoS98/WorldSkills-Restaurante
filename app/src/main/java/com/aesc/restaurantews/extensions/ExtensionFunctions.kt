@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Toast
+import com.aesc.restaurantews.R
 import com.bumptech.glide.Glide
 
 fun Activity.toast(message: CharSequence, duration: Int = Toast.LENGTH_SHORT) =
@@ -16,7 +17,12 @@ fun Activity.toast(resourceId: Int, duration: Int = Toast.LENGTH_SHORT) =
 
 fun ViewGroup.inflate(layoutId: Int) = LayoutInflater.from(context).inflate(layoutId, this, false)!!
 
-fun ImageView.loadByURL(url: String) = Glide.with(this).load(url).into(this)
+fun ImageView.loadByURL(url: String) = Glide.with(this)
+    .load(url)
+    .placeholder(R.drawable.warning_circle)
+    .error(R.drawable.warning_circle)
+    .fallback(R.drawable.warning_circle)
+    .into(this)
 
 fun ImageView.loadByResource(resource: Int) = Glide.with(this).load(resource).into(this)
 

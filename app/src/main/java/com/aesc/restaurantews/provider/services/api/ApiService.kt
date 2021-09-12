@@ -1,9 +1,6 @@
 package com.aesc.visaappk.provider.services.api
 
-import com.aesc.restaurantews.provider.services.models.LoginState
-import com.aesc.restaurantews.provider.services.models.Logo
-import com.aesc.restaurantews.provider.services.models.Registro
-import com.aesc.restaurantews.provider.services.models.Respuesta
+import com.aesc.restaurantews.provider.services.models.*
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -33,5 +30,13 @@ interface ApiService {
     //Logo
     @GET("api/logo/1")
     suspend fun getLogo(): Response<Logo>
+
+    //PLATO ESPECIAL DEL RESTAURANTE
+    @GET("api/especialidad")
+    suspend fun especialidadDelDia(): Response<Especialidad>
+
+    //POLITICAS DE PRIVACIDAD
+    @GET("api/politicas?ver")
+    suspend fun politicasPrivacidad(): Response<Politicas>
 
 }

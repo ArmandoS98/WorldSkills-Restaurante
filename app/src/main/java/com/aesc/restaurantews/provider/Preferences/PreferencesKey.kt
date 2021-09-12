@@ -12,6 +12,7 @@ enum class PreferencesKey(val value: String) {
     TOKEN_USER("tokenUser"),
     ID_USER("idUser"),
     NAME_USER("nameUser"),
+    LOGO_APP("logoApp"),
     USER_LOGIN("userLogin")
 }
 

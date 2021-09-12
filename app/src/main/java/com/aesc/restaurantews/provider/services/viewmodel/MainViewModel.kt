@@ -2,10 +2,7 @@ package com.aesc.visaappk.provider.services.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.aesc.restaurantews.provider.services.models.LoginState
-import com.aesc.restaurantews.provider.services.models.Registro
-import com.aesc.restaurantews.provider.services.models.Respuesta
-import com.aesc.restaurantews.provider.services.models.User
+import com.aesc.restaurantews.provider.services.models.*
 import com.aesc.restaurantews.provider.services.repository.MainRepository
 import kotlinx.coroutines.*
 import retrofit2.Response
@@ -25,6 +22,9 @@ class MainViewModel : ViewModel() {
     val responseAPI = MutableLiveData<Respuesta>()
     val responseLoginAPI = MutableLiveData<Any>()
     val responseLoginAPIv2 = MutableLiveData<LoginState>()
+    val responseLogo = MutableLiveData<Logo>()
+    val responseEspecialidadDia = MutableLiveData<Especialidad>()
+    val responsePoliticas = MutableLiveData<Politicas>()
     var job: Job? = null
     private val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
         onError("Exception handled: ${throwable.localizedMessage}")
@@ -74,6 +74,51 @@ class MainViewModel : ViewModel() {
                     loading.value = false
                 } else {
                     onError(response.body()!!.mensaje.toString())
+                }
+            }
+        }
+    }
+
+    //Logo
+    fun logo() {
+        job = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+            val response = MainRepository().logo()
+            withContext(Dispatchers.Main) {
+                if (response.isSuccessful && validateResponse(response)) {
+                    val temp = response.body()
+                    responseLogo.postValue(temp!!)
+                } else {
+                    onError("Error")
+                }
+            }
+        }
+    }
+
+    //Especialidad del dia
+    fun especialidadDelDia() {
+        job = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+            val response = MainRepository().especialidadDelDia()
+            withContext(Dispatchers.Main) {
+                if (response.isSuccessful && validateResponse(response)) {
+                    val temp = response.body()
+                    responseEspecialidadDia.postValue(temp!!)
+                } else {
+                    onError("Error")
+                }
+            }
+        }
+    }
+
+    //Politicas de Privacidad
+    fun politicasPrivacidad() {
+        job = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+            val response = MainRepository().politicas()
+            withContext(Dispatchers.Main) {
+                if (response.isSuccessful && validateResponse(response)) {
+                    val temp = response.body()
+                    responsePoliticas.postValue(temp!!)
+                } else {
+                    onError("Error")
                 }
             }
         }

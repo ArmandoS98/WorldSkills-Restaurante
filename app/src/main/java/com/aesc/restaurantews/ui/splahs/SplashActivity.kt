@@ -1,30 +1,60 @@
 package com.aesc.restaurantews.ui.splahs
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.view.WindowManager
-import com.aesc.restaurantews.ui.home.MainActivity
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import com.aesc.restaurantews.R
+import com.aesc.restaurantews.Util.Utils
 import com.aesc.restaurantews.extensions.goToActivityF
+import com.aesc.restaurantews.extensions.loadByURL
+import com.aesc.restaurantews.extensions.toast
+import com.aesc.restaurantews.provider.Preferences.PreferencesKey
+import com.aesc.restaurantews.provider.Preferences.PreferencesProvider
+import com.aesc.restaurantews.ui.home.MainActivity
+import com.aesc.visaappk.provider.services.viewmodel.MainViewModel
+import kotlinx.android.synthetic.main.activity_splash.*
 
 class SplashActivity : AppCompatActivity() {
+    private lateinit var viewModels: MainViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
 
+        val logo = PreferencesProvider.string(this, PreferencesKey.LOGO_APP)
+        if (logo == null) {
+            viewModels = ViewModelProvider(this).get(MainViewModel::class.java)
+            logo()
+        } else {
+            starSplash(3000, logo)
+        }
+    }
 
-        // This is used to hide the status bar and make
-        // the splash screen as a full screen activity.
+    private fun starSplash(delay: Long, logo: String) {
+        img_logo.loadByURL(logo)
         window.setFlags(
             WindowManager.LayoutParams.FLAG_FULLSCREEN,
             WindowManager.LayoutParams.FLAG_FULLSCREEN
         )
-
-        // we used the postDelayed(Runnable, time) method
-        // to send a message with a delayed time.
         Handler().postDelayed({
             goToActivityF<MainActivity>()
-        }, 3000) // 3000 is the delayed time in milliseconds.
+        }, delay)
+    }
+
+    private fun logo() {
+        viewModels.responseLogo.observe(this, {
+            PreferencesProvider.set(this, PreferencesKey.LOGO_APP, it.url_logo!!)
+            starSplash(1000, it.url_logo!!)
+        })
+
+        viewModels.errorMessage.observe(this, {
+            Utils.logsUtils("ERROR $it")
+            toast(it, Toast.LENGTH_LONG)
+        })
+
+        viewModels.logo()
     }
 }
