@@ -1,9 +1,6 @@
-package com.aesc.restaurantews
+package com.aesc.restaurantews.ui.home
 
-import android.content.Intent
 import android.os.Bundle
-import android.view.Menu
-import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.navigation.NavigationView
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -13,7 +10,10 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
+import com.aesc.restaurantews.R
+import com.aesc.restaurantews.Util.Utils
 import com.aesc.restaurantews.databinding.ActivityMainBinding
+import com.aesc.restaurantews.extensions.goToActivityF
 import com.aesc.restaurantews.provider.Preferences.PreferencesKey
 import com.aesc.restaurantews.provider.Preferences.PreferencesProvider
 import com.aesc.restaurantews.ui.login.LoginActivity
@@ -58,25 +58,17 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun userAuth() {
-        PreferencesProvider.set(this, PreferencesKey.AUTH_USER, false)
-
         val auth = PreferencesProvider.bool(this, PreferencesKey.AUTH_USER)
+        val id = PreferencesProvider.string(this, PreferencesKey.ID_USER)
+        val token = PreferencesProvider.string(this, PreferencesKey.TOKEN_USER)
+        val name = PreferencesProvider.string(this, PreferencesKey.NAME_USER)
+
+        Utils.logsUtils("id:$id  token:$token  name:$name")
+
         if (!auth!!) {
-            gotoLogin()
+            goToActivityF<LoginActivity>()
         }
     }
-
-    private fun gotoLogin() {
-        val intent = Intent(this, LoginActivity::class.java)
-        startActivity(intent)
-        finish()
-    }
-
-    /*    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-            // Inflate the menu; this adds items to the action bar if it is present.
-            menuInflater.inflate(R.menu.main, menu)
-            return true
-        }*/
 
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment_content_main)

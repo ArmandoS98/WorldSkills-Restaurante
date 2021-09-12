@@ -21,4 +21,8 @@
     <string name="correo">Correo</string>
     <string name="ciudad">Ciudad</string>
     <string name="nombre">Nombre</string>
+
+    <!--LOGIN-->
+    <string name="signup_now">SIGNUP NOW</string>
+    <string name="forgot_password">FORGOT PASSWORD</string>
 </resources>

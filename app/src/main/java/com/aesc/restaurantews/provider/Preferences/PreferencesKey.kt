@@ -10,6 +10,8 @@ import com.google.gson.reflect.TypeToken
 enum class PreferencesKey(val value: String) {
     AUTH_USER("authUser"),
     TOKEN_USER("tokenUser"),
+    ID_USER("idUser"),
+    NAME_USER("nameUser"),
     USER_LOGIN("userLogin")
 }
 
@@ -24,13 +26,21 @@ object PreferencesProvider {
         return prefs(context).getString(key.value, null)
     }
 
+    fun bool(context: Context, key: PreferencesKey): Boolean? {
+        return prefs(context).getBoolean(key.value, false)
+    }
+
+    fun float(context: Context, key: PreferencesKey): Float? {
+        return prefs(context).getFloat(key.value, 0F)
+    }
+
+    fun int(context: Context, key: PreferencesKey): Int? {
+        return prefs(context).getInt(key.value, 0)
+    }
+
     fun set(context: Context, key: PreferencesKey, value: Boolean) {
         val editor = prefs(context).edit()
         editor.putBoolean(key.value, value).apply()
-    }
-
-    fun bool(context: Context, key: PreferencesKey): Boolean? {
-        return prefs(context).getBoolean(key.value, false)
     }
 
     fun set(context: Context, key: PreferencesKey, value: Any) {

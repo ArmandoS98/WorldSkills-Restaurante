@@ -74,4 +74,8 @@ dependencies {
 
     //lottie
     implementation 'com.airbnb.android:lottie:4.1.0'
+
+    //SweetAlerts
+    implementation 'com.github.f0ris.sweetalert:library:1.5.6'
+
 }

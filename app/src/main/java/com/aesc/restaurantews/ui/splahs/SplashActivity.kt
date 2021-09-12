@@ -1,12 +1,12 @@
 package com.aesc.restaurantews.ui.splahs
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.view.WindowManager
-import com.aesc.restaurantews.MainActivity
+import com.aesc.restaurantews.ui.home.MainActivity
 import com.aesc.restaurantews.R
+import com.aesc.restaurantews.extensions.goToActivityF
 
 class SplashActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,9 +24,7 @@ class SplashActivity : AppCompatActivity() {
         // we used the postDelayed(Runnable, time) method
         // to send a message with a delayed time.
         Handler().postDelayed({
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
-            finish()
+            goToActivityF<MainActivity>()
         }, 3000) // 3000 is the delayed time in milliseconds.
     }
 }
