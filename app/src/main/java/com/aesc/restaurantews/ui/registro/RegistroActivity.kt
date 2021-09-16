@@ -15,9 +15,7 @@ import com.aesc.restaurantews.provider.Preferences.PreferencesProvider
 import com.aesc.restaurantews.provider.services.models.Registro
 import com.aesc.restaurantews.provider.services.models.User
 import com.aesc.restaurantews.ui.home.MainActivity
-import com.aesc.restaurantews.ui.login.LoginActivity
 import com.aesc.visaappk.provider.services.viewmodel.MainViewModel
-import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_registro.*
 import kotlinx.android.synthetic.main.activity_registro.tiePassword
 import kotlinx.android.synthetic.main.activity_registro.tieUserName
@@ -81,7 +79,7 @@ class RegistroActivity : AppCompatActivity(), View.OnClickListener {
         viewModels.responseAPI.observe(this, {
             Utils.logsUtils("SUCCESS $it")
             toast(it.menssage, Toast.LENGTH_LONG)
-            login(mail, password)
+            loginAutomatico(mail, password)
         })
 
         viewModels.errorMessage.observe(this, {
@@ -102,7 +100,7 @@ class RegistroActivity : AppCompatActivity(), View.OnClickListener {
         viewModels.registrar(user)
     }
 
-    private fun login(user: String, password: String) {
+    private fun loginAutomatico(user: String, password: String) {
         viewModels.responseLoginAPIv2.observe(this, {
             Utils.logsUtils("SUCCESS $it")
             toast("LOGIN SUCCESS", Toast.LENGTH_LONG)

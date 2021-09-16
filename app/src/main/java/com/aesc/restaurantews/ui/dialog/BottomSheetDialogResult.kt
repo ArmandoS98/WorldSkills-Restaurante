@@ -2,7 +2,6 @@ package com.aesc.restaurantews.ui.dialog
 
 import android.app.Dialog
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,7 +15,7 @@ import com.aesc.visaappk.provider.services.viewmodel.MainViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import kotlinx.android.synthetic.main.layout_especialidad_del_dia.*
+import kotlinx.android.synthetic.main.bottom_sheet_dialog_especialidades.*
 
 
 class BottomSheetDialogResult : BottomSheetDialogFragment(), View.OnClickListener {
@@ -40,13 +39,14 @@ class BottomSheetDialogResult : BottomSheetDialogFragment(), View.OnClickListene
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.layout_especialidad_del_dia, container, false)
+        return inflater.inflate(R.layout.bottom_sheet_dialog_especialidades, container, false)
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         bottomSheetDialog.setOnShowListener {
             bottomSheetDialog.behavior.addBottomSheetCallback(object :
                 BottomSheetBehavior.BottomSheetCallback() {
+
                 override fun onStateChanged(bottomSheet: View, newState: Int) {
                     if (newState == BottomSheetBehavior.STATE_HIDDEN) {
                         bottomSheetDialog.dismiss()
@@ -64,6 +64,7 @@ class BottomSheetDialogResult : BottomSheetDialogFragment(), View.OnClickListene
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         behavior = bottomSheetDialog.behavior.state
+        bottomSheetDialog.behavior.state = BottomSheetBehavior.STATE_EXPANDED
         viewModels = ViewModelProvider(this).get(MainViewModel::class.java)
         especialidad()
     }
