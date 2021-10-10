@@ -1,10 +1,10 @@
-package com.aesc.visaappk.provider.services.api
+package com.aesc.restaurantews.provider.services.api
 
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object MyRetrofitBuilder {
-    const val BASE_URL: String = "https://wsc.fabricasoftware.co/"
+    private const val BASE_URL: String = "https://wsc.fabricasoftware.co/"
 
     private val retrofitBuilder: Retrofit.Builder by lazy {
         Retrofit.Builder()

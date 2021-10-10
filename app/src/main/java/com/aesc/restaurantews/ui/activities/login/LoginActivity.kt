@@ -1,23 +1,23 @@
-package com.aesc.restaurantews.ui.login
+package com.aesc.restaurantews.ui.activities.login
 
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import cn.pedant.SweetAlert.SweetAlertDialog
 import com.aesc.restaurantews.R
 import com.aesc.restaurantews.Util.Utils
-import com.aesc.restaurantews.extensions.goToActivityF
-import com.aesc.restaurantews.provider.services.models.User
-import com.aesc.restaurantews.ui.registro.RegistroActivity
-import com.aesc.visaappk.provider.services.viewmodel.MainViewModel
-import kotlinx.android.synthetic.main.activity_login.*
-import cn.pedant.SweetAlert.SweetAlertDialog
 import com.aesc.restaurantews.extensions.goToActivity
+import com.aesc.restaurantews.extensions.goToActivityF
 import com.aesc.restaurantews.extensions.toast
 import com.aesc.restaurantews.provider.Preferences.PreferencesKey
 import com.aesc.restaurantews.provider.Preferences.PreferencesProvider
-import com.aesc.restaurantews.ui.home.MainActivity
+import com.aesc.restaurantews.provider.services.models.User
+import com.aesc.restaurantews.ui.activities.home.MainActivity
+import com.aesc.restaurantews.ui.activities.registro.RegistroActivity
+import com.aesc.visaappk.provider.services.viewmodel.MainViewModel
+import kotlinx.android.synthetic.main.activity_login.*
 
 
 class LoginActivity : AppCompatActivity(), View.OnClickListener {
@@ -48,11 +48,18 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun initComponent() {
         tieUserName.setText("c@cg3.com")
-        tiePassword.setText("20210")
+        tiePassword.setText("2021")
 
         btn_login.setOnClickListener(this)
         tvSignup.setOnClickListener(this)
         tvForgotPassword.setOnClickListener(this)
+
+        shotBottom()
+    }
+
+    private fun shotBottom() {
+//        val dialog = BottomSheetDialog(this)
+
     }
 
     private fun login() {

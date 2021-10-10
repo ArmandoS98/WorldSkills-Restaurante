@@ -1,4 +1,4 @@
-package com.aesc.restaurantews.ui.carta
+package com.aesc.restaurantews.ui.fragments.carta
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

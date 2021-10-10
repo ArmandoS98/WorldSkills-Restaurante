@@ -1,4 +1,4 @@
-package com.aesc.restaurantews.ui.home
+package com.aesc.restaurantews.ui.activities.home
 
 import android.os.Bundle
 import com.google.android.material.navigation.NavigationView
@@ -16,7 +16,8 @@ import com.aesc.restaurantews.databinding.ActivityMainBinding
 import com.aesc.restaurantews.extensions.goToActivityF
 import com.aesc.restaurantews.provider.Preferences.PreferencesKey
 import com.aesc.restaurantews.provider.Preferences.PreferencesProvider
-import com.aesc.restaurantews.ui.login.LoginActivity
+import com.aesc.restaurantews.ui.dialog.BottomSheetDialogResult
+import com.aesc.restaurantews.ui.activities.login.LoginActivity
 
 class MainActivity : AppCompatActivity() {
 
@@ -67,7 +68,14 @@ class MainActivity : AppCompatActivity() {
 
         if (!auth!!) {
             goToActivityF<LoginActivity>()
+        } else {
+            loadPromotions()
         }
+    }
+
+    private fun loadPromotions() {
+        val mBottomSheetFragment = BottomSheetDialogResult()
+        mBottomSheetFragment.show(this.supportFragmentManager, "MY_BOTTOM_SHEET")
     }
 
     override fun onSupportNavigateUp(): Boolean {

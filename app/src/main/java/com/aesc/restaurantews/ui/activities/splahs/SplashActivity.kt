@@ -1,21 +1,18 @@
-package com.aesc.restaurantews.ui.splahs
+package com.aesc.restaurantews.ui.activities.splahs
 
 import android.os.Bundle
 import android.os.Handler
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import com.aesc.restaurantews.R
 import com.aesc.restaurantews.Util.Utils
 import com.aesc.restaurantews.extensions.goToActivityF
-import com.aesc.restaurantews.extensions.loadByURL
 import com.aesc.restaurantews.extensions.toast
 import com.aesc.restaurantews.provider.Preferences.PreferencesKey
 import com.aesc.restaurantews.provider.Preferences.PreferencesProvider
-import com.aesc.restaurantews.ui.home.MainActivity
+import com.aesc.restaurantews.ui.activities.home.MainActivity
 import com.aesc.visaappk.provider.services.viewmodel.MainViewModel
-import kotlinx.android.synthetic.main.activity_splash.*
 
 class SplashActivity : AppCompatActivity() {
     private lateinit var viewModels: MainViewModel
@@ -24,17 +21,18 @@ class SplashActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
 
-        val logo = PreferencesProvider.string(this, PreferencesKey.LOGO_APP)
+     /*   val logo = PreferencesProvider.string(this, PreferencesKey.LOGO_APP)
         if (logo == null) {
             viewModels = ViewModelProvider(this).get(MainViewModel::class.java)
             logo()
         } else {
-            starSplash(3000, logo)
-        }
+        }*/
+
+        starSplash(3000)
     }
 
-    private fun starSplash(delay: Long, logo: String) {
-        img_logo.loadByURL(logo)
+    private fun starSplash(delay: Long, logo: String ="") {
+        //img_logo.loadByURL(logo)
         window.setFlags(
             WindowManager.LayoutParams.FLAG_FULLSCREEN,
             WindowManager.LayoutParams.FLAG_FULLSCREEN

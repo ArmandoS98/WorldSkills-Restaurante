@@ -1,4 +1,4 @@
-package com.aesc.visaappk.provider.services.api
+package com.aesc.restaurantews.provider.services.api
 
 import com.aesc.restaurantews.provider.services.models.*
 import retrofit2.Response
@@ -38,5 +38,9 @@ interface ApiService {
     //POLITICAS DE PRIVACIDAD
     @GET("api/politicas?ver")
     suspend fun politicasPrivacidad(): Response<Politicas>
+
+    //CATERGORIAS
+    @GET("api/categorias")
+    suspend fun categorias(): Response<Categorias>
 
 }

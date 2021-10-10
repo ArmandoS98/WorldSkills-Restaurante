@@ -14,7 +14,7 @@
 
     <style name="BottomSheetModal" parent="Widget.Design.BottomSheet.Modal">
         <item name="shapeAppearance">@style/BottomSheetShapeAppearance</item>
-<!--        <item name="behavior_peekHeight">600dp</item>-->
+        <item name="behavior_peekHeight">600dp</item>
         <item name="behavior_fitToContents">true</item>
         <item name="behavior_halfExpandedRatio">0.5</item>
     </style>

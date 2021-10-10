@@ -6,17 +6,17 @@
     app:startDestination="@+id/nav_menu">
     <fragment
         android:id="@+id/nav_menu"
-        android:name="com.aesc.restaurantews.ui.carta.CartaFragment"
+        android:name="com.aesc.restaurantews.ui.fragments.carta.CartaFragment"
         android:label="Menu"
         tools:layout="@layout/carta_fragment" />
     <fragment
         android:id="@+id/nav_pedido"
-        android:name="com.aesc.restaurantews.ui.pedidos.PedidosFragment"
+        android:name="com.aesc.restaurantews.ui.fragments.pedidos.PedidosFragment"
         android:label="Pedidos"
         tools:layout="@layout/pedidos_fragment" />
     <fragment
         android:id="@+id/nav_perfil"
-        android:name="com.aesc.restaurantews.ui.perfil.PerfilFragment"
+        android:name="com.aesc.restaurantews.ui.fragments.perfil.PerfilFragment"
         android:label="Pefil"
         tools:layout="@layout/perfil_fragment" />
 </navigation>

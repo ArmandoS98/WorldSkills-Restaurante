@@ -1,4 +1,4 @@
-package com.aesc.restaurantews.ui.registro
+package com.aesc.restaurantews.ui.activities.registro
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -14,7 +14,7 @@ import com.aesc.restaurantews.provider.Preferences.PreferencesKey
 import com.aesc.restaurantews.provider.Preferences.PreferencesProvider
 import com.aesc.restaurantews.provider.services.models.Registro
 import com.aesc.restaurantews.provider.services.models.User
-import com.aesc.restaurantews.ui.home.MainActivity
+import com.aesc.restaurantews.ui.activities.home.MainActivity
 import com.aesc.visaappk.provider.services.viewmodel.MainViewModel
 import kotlinx.android.synthetic.main.activity_registro.*
 import kotlinx.android.synthetic.main.activity_registro.tiePassword
@@ -37,29 +37,35 @@ class RegistroActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun getPolitics() {
+        var status = false
         viewModels.responsePoliticas.observe(this, {
-            Utils.logsUtils("SUCCESS $it")
-            val pDialog = SweetAlertDialog(this, SweetAlertDialog.NORMAL_TYPE)
-            pDialog.titleText = "Politicas de Privacidad"
-            pDialog.contentText = it.datos!!.politicas
-            pDialog.setCancelable(false)
-            pDialog.cancelText = "CANCEL"
-            pDialog.confirmText = "OK"
-            pDialog.setCancelClickListener {
-                toast("La cuenta no fue creada", Toast.LENGTH_LONG)
-                pDialog.dismiss()
+            if (!status) {
+                Utils.logsUtils("SUCCESS $it")
+                val pDialog = SweetAlertDialog(this, SweetAlertDialog.NORMAL_TYPE)
+                pDialog.titleText = "Politicas de Privacidad"
+                pDialog.contentText = it.datos!!.politicas
+                pDialog.setCancelable(false)
+                pDialog.cancelText = "CANCEL"
+                pDialog.confirmText = "OK"
+                pDialog.setCancelClickListener {
+                    toast("La cuenta no fue creada", Toast.LENGTH_LONG)
+                    pDialog.dismiss()
+                }
+                pDialog.setConfirmClickListener {
+                    createAccount()
+                }
+                pDialog.show()
             }
-            pDialog.setConfirmClickListener {
-                createAccount()
-            }
-            pDialog.show()
         })
 
         viewModels.errorMessage.observe(this, {
-            toast(it, Toast.LENGTH_LONG)
+            if (!status) {
+                toast(it, Toast.LENGTH_LONG)
+            }
         })
 
         viewModels.loading.observe(this, {
+            status = it
             if (it) {
                 Utils.logsUtils("SHOW")
             } else {
@@ -71,22 +77,29 @@ class RegistroActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun createAccount() {
+        var status = false
         val name = tieUserName.text.toString()
         val city = tieCiudad.text.toString()
         val mail = tieCorreo.text.toString()
         val password = tiePassword.text.toString()
 
         viewModels.responseAPI.observe(this, {
-            Utils.logsUtils("SUCCESS $it")
-            toast(it.menssage, Toast.LENGTH_LONG)
-            loginAutomatico(mail, password)
+            if (!status) {
+                Utils.logsUtils("SUCCESS $it")
+                toast(it.menssage, Toast.LENGTH_LONG)
+                loginAutomatico(mail, password)
+            }
+
         })
 
         viewModels.errorMessage.observe(this, {
-            toast(it, Toast.LENGTH_LONG)
+            if (!status) {
+                toast(it, Toast.LENGTH_LONG)
+            }
         })
 
         viewModels.loading.observe(this, {
+            status = it
             if (it) {
                 Utils.logsUtils("SHOW")
             } else {
@@ -101,22 +114,28 @@ class RegistroActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun loginAutomatico(user: String, password: String) {
+        var status = false
         viewModels.responseLoginAPIv2.observe(this, {
-            Utils.logsUtils("SUCCESS $it")
-            toast("LOGIN SUCCESS", Toast.LENGTH_LONG)
-            PreferencesProvider.set(this, PreferencesKey.AUTH_USER, true)
-            PreferencesProvider.set(this, PreferencesKey.ID_USER, it.idCliente!!)
-            PreferencesProvider.set(this, PreferencesKey.NAME_USER, it.nombre!!)
-            PreferencesProvider.set(this, PreferencesKey.TOKEN_USER, it.token!!)
-            goToActivityF<MainActivity>()
+            if (!status) {
+                Utils.logsUtils("SUCCESS $it")
+                toast("LOGIN SUCCESS", Toast.LENGTH_LONG)
+                PreferencesProvider.set(this, PreferencesKey.AUTH_USER, true)
+                PreferencesProvider.set(this, PreferencesKey.ID_USER, it.idCliente!!)
+                PreferencesProvider.set(this, PreferencesKey.NAME_USER, it.nombre!!)
+                PreferencesProvider.set(this, PreferencesKey.TOKEN_USER, it.token!!)
+                goToActivityF<MainActivity>()
+            }
         })
 
         viewModels.errorMessage.observe(this, {
-            Utils.logsUtils("ERROR $it")
-            toast(it, Toast.LENGTH_LONG)
+            if (!status) {
+                Utils.logsUtils("ERROR $it")
+                toast(it, Toast.LENGTH_LONG)
+            }
         })
 
         viewModels.loading.observe(this, {
+            status = it
             if (it) {
                 Utils.logsUtils("SHOW")
             } else {

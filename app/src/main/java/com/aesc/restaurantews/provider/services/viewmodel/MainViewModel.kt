@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import com.aesc.restaurantews.provider.services.models.*
 import com.aesc.restaurantews.provider.services.repository.MainRepository
 import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers.Main
 import retrofit2.Response
 
 
@@ -25,7 +26,8 @@ class MainViewModel : ViewModel() {
     val responseLogo = MutableLiveData<Logo>()
     val responseEspecialidadDia = MutableLiveData<Especialidad>()
     val responsePoliticas = MutableLiveData<Politicas>()
-    var job: Job? = null
+    val responseCategorias = MutableLiveData<Categorias>()
+    var job: CompletableJob? = null
     private val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
         onError("Exception handled: ${throwable.localizedMessage}")
     }
@@ -33,31 +35,89 @@ class MainViewModel : ViewModel() {
 
     fun registrar(jv: Registro) {
         loading.value = true
-        job = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-            val response = MainRepository().getStatusRegister(jv)
-            withContext(Dispatchers.Main) {
-                if (response.isSuccessful) {
-                    responseAPI.postValue(response.body())
-                    loading.value = false
-                } else {
-                    onError("Error : ${response.message()} ")
+        job = Job()
+        job.let { theJob ->
+            CoroutineScope(Dispatchers.IO + theJob!! + exceptionHandler).launch {
+                try {
+                    val response = MainRepository().getStatusRegister(jv)
+                    withContext(Main) {
+                        if (response.isSuccessful) {
+                            if (validateResponse(response)) {
+                                loading.value = false
+                                responseAPI.postValue(response.body())
+                                theJob.complete()
+                            } else {
+                                val error = "Error login"
+                                onError(error)
+                            }
+                        } else {
+                            val msg = response.message()
+                            onError(msg)
+                        }
+                    }
+                } catch (t: Throwable) {
+                    val msg = t.message.toString()
+                    onError(msg)
                 }
             }
         }
     }
 
-    fun login(credentials: User) {
+    fun politicasPrivacidad() {
         loading.value = true
-        job = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-            val response = MainRepository().login(credentials)
-            withContext(Dispatchers.Main) {
-                if (response.isSuccessful && validateResponse(response)) {
-                    val temp = response.body()
-                    val body = temp.toString()
-                    responseLoginAPI.postValue(temp!!)
-                    loading.value = false
-                } else {
-                    onError(response.body().toString())
+        job = Job()
+        job.let { theJob ->
+            CoroutineScope(Dispatchers.IO + theJob!! + exceptionHandler).launch {
+                try {
+                    val response = MainRepository().politicas()
+                    withContext(Main) {
+                        if (response.isSuccessful) {
+                            if (validateResponse(response)) {
+                                loading.value = false
+                                responsePoliticas.postValue(response.body())
+                                theJob.complete()
+                            } else {
+                                val error = "Error login"
+                                onError(error)
+                            }
+                        } else {
+                            val msg = response.message()
+                            onError(msg)
+                        }
+                    }
+                } catch (t: Throwable) {
+                    val msg = t.message.toString()
+                    onError(msg)
+                }
+            }
+        }
+    }
+
+    fun categorias() {
+        loading.value = true
+        job = Job()
+        job.let { theJob ->
+            CoroutineScope(Dispatchers.IO + theJob!! + exceptionHandler).launch {
+                try {
+                    val response = MainRepository().categorias()
+                    withContext(Main) {
+                        if (response.isSuccessful) {
+                            if (validateResponse(response)) {
+                                loading.value = false
+                                responseCategorias.postValue(response.body())
+                                theJob.complete()
+                            } else {
+                                val error = "Error login"
+                                onError(error)
+                            }
+                        } else {
+                            val msg = response.message()
+                            onError(msg)
+                        }
+                    }
+                } catch (t: Throwable) {
+                    val msg = t.message.toString()
+                    onError(msg)
                 }
             }
         }
@@ -65,60 +125,59 @@ class MainViewModel : ViewModel() {
 
     fun loginv2(credentials: User) {
         loading.value = true
-        job = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-            val response = MainRepository().loginv2(credentials)
-            withContext(Dispatchers.Main) {
-                if (response.isSuccessful && validateResponse(response)) {
-                    val temp = response.body()
-                    responseLoginAPIv2.postValue(temp!!)
-                    loading.value = false
-                } else {
-                    onError(response.body()!!.mensaje.toString())
+        job = Job()
+        job.let { theJob ->
+            CoroutineScope(Dispatchers.IO + theJob!! + exceptionHandler).launch {
+                try {
+                    val response = MainRepository().loginv2(credentials)
+                    withContext(Main) {
+                        if (response.isSuccessful) {
+                            if (validateResponse(response)) {
+                                loading.value = false
+                                responseLoginAPIv2.postValue(response.body())
+                                theJob.complete()
+                            } else {
+                                val error = "Error login"
+                                onError(error)
+                            }
+                        } else {
+                            val msg = response.message()
+                            onError(msg)
+                        }
+                    }
+                } catch (t: Throwable) {
+                    val msg = t.message.toString()
+                    onError(msg)
                 }
             }
         }
     }
 
-    //Logo
-    fun logo() {
-        job = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-            val response = MainRepository().logo()
-            withContext(Dispatchers.Main) {
-                if (response.isSuccessful && validateResponse(response)) {
-                    val temp = response.body()
-                    responseLogo.postValue(temp!!)
-                } else {
-                    onError("Error")
-                }
-            }
-        }
-    }
-
-    //Especialidad del dia
     fun especialidadDelDia() {
-        job = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-            val response = MainRepository().especialidadDelDia()
-            withContext(Dispatchers.Main) {
-                if (response.isSuccessful && validateResponse(response)) {
-                    val temp = response.body()
-                    responseEspecialidadDia.postValue(temp!!)
-                } else {
-                    onError("Error")
-                }
-            }
-        }
-    }
-
-    //Politicas de Privacidad
-    fun politicasPrivacidad() {
-        job = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-            val response = MainRepository().politicas()
-            withContext(Dispatchers.Main) {
-                if (response.isSuccessful && validateResponse(response)) {
-                    val temp = response.body()
-                    responsePoliticas.postValue(temp!!)
-                } else {
-                    onError("Error")
+        loading.value = true
+        job = Job()
+        job.let { theJob ->
+            CoroutineScope(Dispatchers.IO + theJob!! + exceptionHandler).launch {
+                try {
+                    val response = MainRepository().especialidadDelDia()
+                    withContext(Main) {
+                        if (response.isSuccessful) {
+                            if (validateResponse(response)) {
+                                loading.value = false
+                                responseEspecialidadDia.postValue(response.body())
+                                theJob.complete()
+                            } else {
+                                val error = "Error login"
+                                onError(error)
+                            }
+                        } else {
+                            val msg = response.message()
+                            onError(msg)
+                        }
+                    }
+                } catch (t: Throwable) {
+                    val msg = t.message.toString()
+                    onError(msg)
                 }
             }
         }
@@ -154,6 +213,10 @@ class MainViewModel : ViewModel() {
     override fun onCleared() {
         super.onCleared()
         job?.cancel()
+    }
+
+    fun logo() {
+
     }
 
 }

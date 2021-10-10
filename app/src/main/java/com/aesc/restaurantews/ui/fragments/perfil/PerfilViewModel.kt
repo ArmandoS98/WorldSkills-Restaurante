@@ -1,4 +1,4 @@
-package com.aesc.restaurantews.ui.perfil
+package com.aesc.restaurantews.ui.fragments.perfil
 
 import androidx.lifecycle.ViewModel
 

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.registro.RegistroActivity">
+    tools:context=".ui.activities.registro.RegistroActivity">
 
     <TextView
         android:id="@+id/tvRegis"

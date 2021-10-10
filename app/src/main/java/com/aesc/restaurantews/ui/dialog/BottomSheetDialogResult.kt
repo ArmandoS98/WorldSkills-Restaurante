@@ -64,27 +64,35 @@ class BottomSheetDialogResult : BottomSheetDialogFragment(), View.OnClickListene
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         behavior = bottomSheetDialog.behavior.state
-        bottomSheetDialog.behavior.state = BottomSheetBehavior.STATE_EXPANDED
+//        bottomSheetDialog.behavior.state = BottomSheetBehavior.STATE_EXPANDED
         viewModels = ViewModelProvider(this).get(MainViewModel::class.java)
+        btnContinuar.setOnClickListener(this)
         especialidad()
     }
 
     private fun especialidad() {
+        var status = false
         viewModels.responseEspecialidadDia.observe(this, {
-            val especialidad = it.datos!!
-            Utils.logsUtils("SUCCESS ${especialidad.url_foto}")
-            img_especialidad.loadByURL(especialidad.url_foto!!)
-            tv_nombre.text = especialidad.nombre
-            tv_precio.text = especialidad.precio.toString()
-            tv_descripcion.text = especialidad.descripcion
+            if (!status){
+                val especialidad = it.datos!!
+                Utils.logsUtils("SUCCESS ${especialidad.url_foto}")
+                img_especialidad.loadByURL(especialidad.url_foto!!)
+                tv_nombre.text = especialidad.nombre
+                tv_precio.text = especialidad.precio.toString()
+                tv_descripcion.text = especialidad.descripcion
+            }
+
         })
 
         viewModels.errorMessage.observe(this, {
-            Utils.logsUtils("ERROR $it")
-            requireActivity().toast(it, Toast.LENGTH_LONG)
+            if (!status){
+                Utils.logsUtils("ERROR $it")
+                requireActivity().toast(it, Toast.LENGTH_LONG)
+            }
         })
 
         viewModels.loading.observe(this, {
+            status = it
             if (it) {
                 Utils.logsUtils("SHOW")
             } else {
@@ -97,6 +105,11 @@ class BottomSheetDialogResult : BottomSheetDialogFragment(), View.OnClickListene
 
     override fun onClick(v: View?) {
         val ids = v!!.id
-        bottomSheetDialog.behavior.state = BottomSheetBehavior.STATE_EXPANDED
+//        bottomSheetDialog.behavior.state = BottomSheetBehavior.STATE_EXPANDED
+        when (ids) {
+            R.id.btnContinuar -> {
+                dismiss()
+            }
+        }
     }
 }

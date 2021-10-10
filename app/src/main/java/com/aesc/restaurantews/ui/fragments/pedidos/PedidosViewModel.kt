@@ -1,4 +1,4 @@
-package com.aesc.restaurantews.ui.pedidos
+package com.aesc.restaurantews.ui.fragments.pedidos
 
 import androidx.lifecycle.ViewModel
 
